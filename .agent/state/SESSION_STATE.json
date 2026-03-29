@@ -1,0 +1,11 @@
+{
+  "run_id": "bootstrap-0001",
+  "last_updated": "1970-01-01T00:00:00Z",
+  "current_phase": "Spec",
+  "current_task_id": "T0001",
+  "current_step": "S1",
+  "current_workstream": "setup",
+  "status": "idle",
+  "pending_confirmation": false,
+  "notes": "Initialized from generic template."
+}
