@@ -16,8 +16,10 @@
 - [ ] Set task to `InProgress`.
 - [ ] Check `Risk` level.
 - [ ] If `high`, request human checkpoint before execution.
+- [ ] Before first code-changing step, create a local git backup commit.
 - [ ] Execute one step only.
 - [ ] Immediately sync updates to `TASK.md`, `PROGRESS.md`, `SESSION_STATE.json`.
+- [ ] After key modification milestone, create backup commit.
 - [ ] Repeat until all planned steps are complete.
 
 ## Phase 4 - Review
@@ -27,6 +29,7 @@
 ## Phase 5 - Finish
 - [ ] Set status to `Done` or `Blocked`.
 - [ ] Append closeout log entry in `.agent/PROGRESS.md`.
+- [ ] Ensure final backup commit exists for the task.
 - [ ] Update `.agent/state/LAST_RUN_SUMMARY.md`.
 
 ## Post-Run

@@ -20,13 +20,20 @@ Code complete is not task complete. A task is complete only when execution, revi
 Repeat until no runnable task exists:
 1. Select next task via deterministic rule in `.agent/TASK.md`.
 2. Move task to `InProgress`.
-3. Run language runtime preflight using `.agent/languages/*` docs.
-4. Execute one checklist step.
-5. Immediately sync state in all three places:
+3. Create git safety backup before first code-changing step of the task:
+   - if working tree is clean, create local checkpoint commit;
+   - if dirty, stage only task-related files and create checkpoint commit.
+   - recommended command: `cd web && npm run backup -- --task <TaskID> --step S1 --message "pre-change"`.
+4. Run language runtime preflight using `.agent/languages/*` docs.
+5. Execute one checklist step.
+6. Immediately sync state in all three places:
    - update `.agent/TASK.md` progress/checklist status,
    - append step result to `.agent/PROGRESS.md`,
    - refresh `.agent/state/SESSION_STATE.json`.
-6. Repeat step-by-step until task-level acceptance can be verified.
+7. After each key modification milestone, create one backup commit.
+   - recommended command: `cd web && npm run backup -- --task <TaskID> --step <StepID> --message "milestone"`.
+8. If `IDEA.md` provides `当前项目 GitHub 链接（可选）` and remote is configured, optionally push backup commits to remote.
+9. Repeat step-by-step until task-level acceptance can be verified.
 
 ## Language Runtime Preflight
 - Determine language profile from `IDEA.md` or task metadata.
@@ -41,8 +48,9 @@ Repeat until no runnable task exists:
 
 ### Phase 5: Finish (Git/Closeout)
 1. If code changed, prepare clean change summary and verification notes.
-2. If queue is empty, write final summary entry in `.agent/PROGRESS.md`.
-3. Save continuation hints in `.agent/state/LAST_RUN_SUMMARY.md`.
+2. Ensure at least one final backup commit exists for this task.
+3. If queue is empty, write final summary entry in `.agent/PROGRESS.md`.
+4. Save continuation hints in `.agent/state/LAST_RUN_SUMMARY.md`.
 
 ## Checkpoint Policy
 - For `Risk=high` tasks, stop before execution and request human approval.
