@@ -1,5 +1,5 @@
 ![Web Config Panel](doc/web_config_panel.png "Web Config Panel")
-![Web Config Panel](doc/table.png "Web Config Panel")
+![Task Table View](doc/table.png "Task Table View")
 
 # .agent Template Guide
 
