@@ -5,10 +5,17 @@ const pickBackgroundFolderBtn = document.getElementById("pickBackgroundFolderBtn
 const pickBackgroundFolderInput = document.getElementById("pickBackgroundFolderInput");
 const pickOutputFolderBtn = document.getElementById("pickOutputFolderBtn");
 const pickOutputFolderInput = document.getElementById("pickOutputFolderInput");
+const gitOpsFieldset = document.getElementById("gitOpsFieldset");
+const gitOpsNotice = document.getElementById("gitOpsNotice");
+const viewButtons = Array.from(document.querySelectorAll(".view-btn"));
+const viewMap = {
+  settings: document.getElementById("viewSettings"),
+  monitor: document.getElementById("viewMonitor")
+};
 
 function setStatus(text, isError = false) {
   saveStatus.textContent = text;
-  saveStatus.style.color = isError ? "#9a2f2f" : "#bf5f39";
+  saveStatus.style.color = isError ? "#f85149" : "#8b949e";
 }
 
 function collectFormValues() {
@@ -25,6 +32,42 @@ function fillForm(fields) {
     if (form.elements[key]) {
       form.elements[key].value = value || "";
     }
+  });
+
+  refreshGitOptionState();
+}
+
+function refreshGitOptionState() {
+  const githubUrl = String(form.elements.githubUrl?.value || "").trim();
+  const enabled = Boolean(githubUrl);
+
+  if (gitOpsFieldset) {
+    gitOpsFieldset.disabled = !enabled;
+    gitOpsFieldset.classList.toggle("is-disabled", !enabled);
+  }
+
+  if (gitOpsNotice) {
+    gitOpsNotice.textContent = enabled
+      ? "已启用 Git 自动提交流程设置。"
+      : "填写 GitHub 链接后可设置自动 commit / push。";
+  }
+
+  if (!enabled) {
+    form.elements.autoCommit.value = "";
+    form.elements.autoPush.value = "";
+  }
+}
+
+function switchView(nextView) {
+  Object.entries(viewMap).forEach(([name, host]) => {
+    if (!host) {
+      return;
+    }
+    host.classList.toggle("is-active", name === nextView);
+  });
+
+  viewButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.viewTarget === nextView);
   });
 }
 
@@ -103,6 +146,7 @@ async function loadTasks() {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  refreshGitOptionState();
   setStatus("保存中...");
 
   try {
@@ -157,10 +201,21 @@ pickOutputFolderInput.addEventListener("change", () => {
   }
 });
 
+form.elements.githubUrl.addEventListener("input", () => {
+  refreshGitOptionState();
+});
+
+viewButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    switchView(button.dataset.viewTarget);
+  });
+});
+
 (async function boot() {
   try {
     await loadIdea();
     await loadTasks();
+    switchView("settings");
     setStatus("初始化完成");
   } catch (err) {
     setStatus(`初始化失败: ${err.message}`, true);

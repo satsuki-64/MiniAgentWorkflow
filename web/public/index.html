@@ -7,144 +7,166 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="layout">
-      <section class="panel panel-form">
-        <h1>IDEA Config Panel</h1>
-        <p class="sub">编辑后点击保存，配置会写回 IDEA.md 对应字段。</p>
-
-        <form id="ideaForm">
-          <label>当前目标描述
-            <input name="goal" type="text" placeholder="一句话描述目标" />
-          </label>
-
-          <label>背景信息补充（多行）
-            <textarea name="backgroundInfoNotes" rows="6" placeholder="可填写背景、上下文、参考说明；支持多行"></textarea>
-          </label>
-          <div class="inline-tools">
-            <button type="button" id="pickBackgroundFolderBtn">选择文件夹并插入路径</button>
-            <input id="pickBackgroundFolderInput" type="file" webkitdirectory directory multiple hidden />
-          </div>
-
-          <label>预期输出补充（多行）
-            <textarea name="expectedOutputNotes" rows="6" placeholder="可填写交付目标、验收说明、非目标范围；支持多行"></textarea>
-          </label>
-          <div class="inline-tools">
-            <button type="button" id="pickOutputFolderBtn">选择文件夹并插入路径</button>
-            <input id="pickOutputFolderInput" type="file" webkitdirectory directory multiple hidden />
-          </div>
-
-          <label>项目 GitHub 链接（可选）
-            <input name="githubUrl" type="url" placeholder="https://github.com/owner/repo.git" />
-          </label>
-
-          <label>主工作流
-            <select name="workstream">
-              <option value="">请选择</option>
-              <option value="research">research</option>
-              <option value="model">model</option>
-              <option value="experiment">experiment</option>
-              <option value="writing">writing</option>
-            </select>
-          </label>
-
-          <label>允许自动创建 Fix 任务
-            <select name="allowAutoFix">
-              <option value="">请选择</option>
-              <option value="是">是</option>
-              <option value="否">否</option>
-            </select>
-          </label>
-
-          <label>发现 Bug 必须先登记
-            <select name="registerBugFirst">
-              <option value="">请选择</option>
-              <option value="是">是</option>
-              <option value="否">否</option>
-            </select>
-          </label>
-
-          <label>持续执行到验收
-            <select name="continuousExecution">
-              <option value="">请选择</option>
-              <option value="是">是</option>
-              <option value="否">否</option>
-            </select>
-          </label>
-
-          <label>单次执行完成后自动 commit
-            <select name="autoCommit">
-              <option value="">请选择</option>
-              <option value="是">是</option>
-              <option value="否">否</option>
-            </select>
-          </label>
-
-          <label>单次执行完成后自动 push
-            <select name="autoPush">
-              <option value="">请选择</option>
-              <option value="是">是</option>
-              <option value="否">否</option>
-            </select>
-          </label>
-
-          <label>风险等级
-            <select name="riskLevel">
-              <option value="">请选择</option>
-              <option value="低风险">低风险</option>
-              <option value="中风险">中风险</option>
-              <option value="高风险">高风险</option>
-            </select>
-          </label>
-
-          <label>规划详细程度
-            <select name="planDepth">
-              <option value="">请选择</option>
-              <option value="快速规划">快速规划</option>
-              <option value="标准规划">标准规划</option>
-              <option value="深度规划">深度规划</option>
-            </select>
-          </label>
-
-          <label>目标语言
-            <select name="targetLanguage">
-              <option value="">请选择</option>
-              <option value="Python">Python</option>
-              <option value="C++">C++</option>
-              <option value="其他">其他</option>
-            </select>
-          </label>
-
-          <div class="actions">
-            <button type="button" id="reloadBtn">重新加载</button>
-            <button type="submit">保存到 IDEA.md</button>
-          </div>
-          <p id="saveStatus" class="status"></p>
-        </form>
-      </section>
-
-      <section class="panel panel-tasks">
-        <h2>Task Live Board</h2>
-        <p class="sub">每 3 秒刷新一次，按状态分组展示。</p>
-        <div class="board">
-          <div class="lane" data-lane="InProgress">
-            <h3>正在执行</h3>
-            <div class="cards" id="laneInProgress"></div>
-          </div>
-          <div class="lane" data-lane="Todo">
-            <h3>将要执行</h3>
-            <div class="cards" id="laneTodo"></div>
-          </div>
-          <div class="lane" data-lane="Blocked">
-            <h3>Blocked</h3>
-            <div class="cards" id="laneBlocked"></div>
-          </div>
-          <div class="lane" data-lane="Done">
-            <h3>已完成</h3>
-            <div class="cards" id="laneDone"></div>
-          </div>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>MiniAgent Control Center</h1>
+          <p class="sub">灰黑 GitHub 风格仪表盘</p>
         </div>
-      </section>
-    </main>
+        <nav class="view-switch" aria-label="页面切换">
+          <button type="button" class="view-btn is-active" data-view-target="settings">设置信息</button>
+          <button type="button" class="view-btn" data-view-target="monitor">任务监控</button>
+        </nav>
+      </header>
+
+      <main class="view-stack">
+        <section id="viewSettings" class="view is-active">
+          <section class="panel panel-form">
+            <h2>IDEA Config Panel</h2>
+            <p class="sub">编辑后点击保存，配置会写回 IDEA.md 对应字段。</p>
+
+            <form id="ideaForm">
+              <label>当前目标描述
+                <input name="goal" type="text" placeholder="一句话描述目标" />
+              </label>
+
+              <label>背景信息补充（多行）
+                <textarea name="backgroundInfoNotes" rows="6" placeholder="可填写背景、上下文、参考说明；支持多行"></textarea>
+              </label>
+              <div class="inline-tools">
+                <button type="button" id="pickBackgroundFolderBtn">选择文件夹并插入路径</button>
+                <input id="pickBackgroundFolderInput" type="file" webkitdirectory directory multiple hidden />
+              </div>
+
+              <label>预期输出补充（多行）
+                <textarea name="expectedOutputNotes" rows="6" placeholder="可填写交付目标、验收说明、非目标范围；支持多行"></textarea>
+              </label>
+              <div class="inline-tools">
+                <button type="button" id="pickOutputFolderBtn">选择文件夹并插入路径</button>
+                <input id="pickOutputFolderInput" type="file" webkitdirectory directory multiple hidden />
+              </div>
+
+              <label>项目 GitHub 链接（可选）
+                <input name="githubUrl" type="url" placeholder="https://github.com/owner/repo.git" />
+              </label>
+
+              <fieldset id="gitOpsFieldset" class="git-options" disabled>
+                <legend>Git 自动提交流程（可选）</legend>
+                <p id="gitOpsNotice" class="sub">填写 GitHub 链接后可设置自动 commit / push。</p>
+
+                <label>单次执行完成后自动 commit
+                  <select name="autoCommit">
+                    <option value="">请选择</option>
+                    <option value="是">是</option>
+                    <option value="否">否</option>
+                  </select>
+                </label>
+
+                <label>单次执行完成后自动 push
+                  <select name="autoPush">
+                    <option value="">请选择</option>
+                    <option value="是">是</option>
+                    <option value="否">否</option>
+                  </select>
+                </label>
+              </fieldset>
+
+              <label>主工作流
+                <select name="workstream">
+                  <option value="">请选择</option>
+                  <option value="research">research</option>
+                  <option value="model">model</option>
+                  <option value="experiment">experiment</option>
+                  <option value="writing">writing</option>
+                </select>
+              </label>
+
+              <label>允许自动创建 Fix 任务
+                <select name="allowAutoFix">
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                </select>
+              </label>
+
+              <label>发现 Bug 必须先登记
+                <select name="registerBugFirst">
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                </select>
+              </label>
+
+              <label>持续执行到验收
+                <select name="continuousExecution">
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                </select>
+              </label>
+
+              <label>风险等级
+                <select name="riskLevel">
+                  <option value="">请选择</option>
+                  <option value="低风险">低风险</option>
+                  <option value="中风险">中风险</option>
+                  <option value="高风险">高风险</option>
+                </select>
+              </label>
+
+              <label>规划详细程度
+                <select name="planDepth">
+                  <option value="">请选择</option>
+                  <option value="快速规划">快速规划</option>
+                  <option value="标准规划">标准规划</option>
+                  <option value="深度规划">深度规划</option>
+                </select>
+              </label>
+
+              <label>目标语言
+                <select name="targetLanguage">
+                  <option value="">请选择</option>
+                  <option value="Python">Python</option>
+                  <option value="C++">C++</option>
+                  <option value="其他">其他</option>
+                </select>
+              </label>
+
+              <div class="actions">
+                <button type="button" id="reloadBtn">重新加载</button>
+                <button type="submit">保存到 IDEA.md</button>
+              </div>
+              <p id="saveStatus" class="status"></p>
+            </form>
+          </section>
+        </section>
+
+        <section id="viewMonitor" class="view">
+          <section class="panel panel-tasks">
+            <h2>Task Live Board</h2>
+            <p class="sub">每 3 秒刷新一次，按状态分组展示。</p>
+            <div class="board">
+              <div class="lane" data-lane="InProgress">
+                <h3>正在执行</h3>
+                <div class="cards" id="laneInProgress"></div>
+              </div>
+              <div class="lane" data-lane="Todo">
+                <h3>将要执行</h3>
+                <div class="cards" id="laneTodo"></div>
+              </div>
+              <div class="lane" data-lane="Blocked">
+                <h3>Blocked</h3>
+                <div class="cards" id="laneBlocked"></div>
+              </div>
+              <div class="lane" data-lane="Done">
+                <h3>已完成</h3>
+                <div class="cards" id="laneDone"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
 
     <script src="app.js"></script>
   </body>
