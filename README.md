@@ -7,7 +7,7 @@ This folder contains a reusable, project-agnostic Agent workflow.
 
 ## Quick Start
 1. Write your goal in `IDEA.md`.
-2. Ask Agent: "Read IDEA.md, regenerate TASK.md using .agent/TASK_SCHEMA.md, then execute Ralph loop following WORKFLOW.md and COPILOT.md"
+2. Ask Agent: "Read IDEA.md, regenerate TASK.md using .agent/TASK_SCHEMA.md, then execute Ralph loop following WORKFLOW.md and COPILOT.md;Note: When you finish your work or encounter issues that need clarification, please invoke the questioning tool to obtain further instructions instead of terminating the conversation directly."
 3. Review checkpoints for high-risk tasks.
 4. Track results in `.agent/PROGRESS.md`.
 

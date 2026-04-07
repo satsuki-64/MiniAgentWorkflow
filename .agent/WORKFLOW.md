@@ -32,8 +32,7 @@ Repeat until no runnable task exists:
    - refresh `.agent/state/SESSION_STATE.json`.
 7. After each key modification milestone, create one backup commit.
    - recommended command: `cd web && npm run backup -- --task <TaskID> --step <StepID> --message "milestone"`.
-8. If `IDEA.md` provides `当前项目 GitHub 链接（可选）` and remote is configured, optionally push backup commits to remote.
-9. Repeat step-by-step until task-level acceptance can be verified.
+8. Repeat step-by-step until task-level acceptance can be verified.
 
 ## Language Runtime Preflight
 - Determine language profile from `IDEA.md` or task metadata.

@@ -26,7 +26,6 @@ Do not accumulate updates for batch write at the end.
 - Before the first code-changing action of each `InProgress` task, create a local git checkpoint commit.
 - After each key modification milestone, create another backup commit.
 - Backup commits should be concise and traceable, for example: `backup(T0002): complete S2 parser update`.
-- If `IDEA.md` includes `当前项目 GitHub 链接（可选）` and repository remote is configured, Agent may push backup commits to remote as optional off-machine backup.
 - If high-risk or destructive change is planned, always create a backup commit immediately before execution.
 
 ## Execution Boundary (Mixed Mode)
